@@ -29,12 +29,12 @@ class WorkspaceManager:
         self.mappersManager = mappersManager
         self.active_workspace = None
 
-    def getWorkspacesNames(self):
+    def get_workspaces_names(self):
         """Returns the names of the workspaces as a list of strings"""
         return get_workspaces_names()
 
-    def createWorkspace(self, name, desc, start_date=int(time.time() * 1000),
-                        finish_date=int(time.time() * 1000), customer=""):
+    def create_workspace(self, name, desc, start_date=int(time.time() * 1000),
+                         finish_date=int(time.time() * 1000), customer=""):
         # XXX: DEPRECATE NEXT LINE
         workspace = Workspace(name, desc)
         try:
@@ -48,11 +48,11 @@ class WorkspaceManager:
         except Exception as e:
             raise WorkspaceException(str(e))
         self.mappersManager.createMappers(name)
-        self.setActiveWorkspace(workspace)
+        self.set_active_workspaces(workspace)
         notification_center.workspaceChanged(workspace)
         return name
 
-    def openWorkspace(self, name):
+    def open_workspace(self, name):
         """Open a workspace by name. Returns the workspace. Raises an
         WorkspaceException if something went wrong along the way.
         """
@@ -71,31 +71,31 @@ class WorkspaceManager:
             notification_center.DBConnectionProblem(e)
             raise WorkspaceException(str(e))
         self.mappersManager.createMappers(name)
-        self.setActiveWorkspace(workspace)
+        self.set_active_workspaces(workspace)
         notification_center.workspaceChanged(workspace)
         return workspace
 
-    def removeWorkspace(self, name):
-        if name in self.getWorkspacesNames():
+    def remove_workspaces(self, name):
+        if name in self.get_workspaces_names():
             try:
                 return delete_workspace(name)
             except Unauthorized:
                 notification_center.showDialog("You are not authorized to "
                                                "delete this workspace. \n")
 
-    def setActiveWorkspace(self, workspace):
+    def set_active_workspaces(self, workspace):
         self.active_workspace = workspace
 
-    def getActiveWorkspace(self):
+    def get_active_workspace(self):
         return self.active_workspace
 
-    def workspaceExists(self, name):
-        return name in self.getWorkspacesNames()
+    def workspace_exists(self, name):
+        return name in self.get_workspaces_names()
 
-    def isActive(self, name):
+    def is_active(self, name):
         return self.active_workspace.getName() == name
 
-    def isWorkspaceNameValid(self, ws_name):
+    def is_workspace_name_valid(self, ws_name):
         """Returns True if the ws_name is valid, else if it's not"""
         letters_or_numbers = r"^[a-z0-9][a-z0-9\_\$()\+\-\/]*$"
         regex_name = re.match(letters_or_numbers, ws_name)

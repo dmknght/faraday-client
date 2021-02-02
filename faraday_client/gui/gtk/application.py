@@ -69,7 +69,7 @@ from faraday_client.gui.gtk.dialogs import ForceLoginDialog
 from faraday_client.gui.gtk.dialogs import NewWorkspaceDialog
 from faraday_client.gui.gtk.dialogs import NotificationsDialog
 from faraday_client.gui.gtk.dialogs import PluginOptionsDialog
-from faraday_client.gui.gtk.dialogs import PreferenceWindowDialog
+# from faraday_client.gui.gtk.dialogs import PreferenceWindowDialog
 from faraday_client.gui.gtk.dialogs import AuthDialog
 from faraday_client.gui.gtk.dialogs import FaradayPluginsDialog
 from faraday_client.gui.gtk.dialogs import errorDialog
@@ -156,7 +156,7 @@ class GuiApp(Gtk.Application, FaradayUi):
 
     def get_active_workspace(self):
         """Return the currently active workspace"""
-        return self.workspace_manager.getActiveWorkspace()
+        return self.workspace_manager.get_active_workspace()
 
     def getMainWindow(self):
         """Useless mostly, but guiapi uses this method to access the main
@@ -169,7 +169,7 @@ class GuiApp(Gtk.Application, FaradayUi):
         the one the user wrote. If everything's fine, it saves the new
         workspace and returns True. If something went wrong, return False"""
 
-        if name in self.workspace_manager.getWorkspacesNames():
+        if name in self.workspace_manager.get_workspaces_names():
             error_str = "A workspace with name %s already exists" % name
             faraday_client.model.api.log(error_str, "ERROR")
             errorDialog(self.window, error_str)
@@ -177,9 +177,9 @@ class GuiApp(Gtk.Application, FaradayUi):
         else:
             faraday_client.model.api.log("Creating workspace '%s'" % name)
             faraday_client.model.api.devlog("Looking for the delegation class")
-            manager = self.getWorkspaceManager()
+            manager = self.get_workspace_manager()
             try:
-                name = manager.createWorkspace(name, description)
+                name = manager.create_workspace(name, description)
                 self.change_workspace(name)
                 creation_ok = True
             except Exception as e:
@@ -194,7 +194,7 @@ class GuiApp(Gtk.Application, FaradayUi):
         select another workspace."""
         try:
             faraday_client.model.api.log("Removing Workspace: %s" % ws_name)
-            self.getWorkspaceManager().removeWorkspace(ws_name)
+            self.get_workspace_manager().remove_workspaces(ws_name)
             self.ws_sidebar.clear_sidebar()
             self.ws_sidebar.refresh_sidebar()
         except Exception as ex:
@@ -515,7 +515,7 @@ class GuiApp(Gtk.Application, FaradayUi):
             """
             GObject.idle_add(loading_workspace, 'show')
             try:
-                ws = self.openWorkspace(workspace_name)
+                ws = self.open_workspace(workspace_name)
                 GObject.idle_add(CONF.setLastWorkspace, ws.name)
                 GObject.idle_add(CONF.saveConfig)
             except Exception as e:

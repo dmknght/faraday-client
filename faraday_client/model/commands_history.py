@@ -10,8 +10,8 @@ import socket
 import subprocess
 import getpass
 from faraday_client.config.configuration import getInstanceConfiguration
-CONF = getInstanceConfiguration()
 
+CONF = getInstanceConfiguration()
 
 from threading import Event
 from sys import platform as _platform
@@ -38,21 +38,23 @@ def get_private_ip():
     if ip:
         if not ip.startswith('127'):
             return ip
-    if _platform in ["linux", "linux2"]: # linux
-        ip = subprocess.check_output(["ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/'"], shell=True)
-    elif _platform == "darwin": # MAC OS X
+    if _platform in ["linux", "linux2"]:  # linux
+        ip = subprocess.check_output(["ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d'/'"],
+                                     shell=True)
+    elif _platform == "darwin":  # MAC OS X
         ip = subprocess.check_output(["ifconfig | grep 'inet ' | grep -Fv 127.0.0.1 | awk '{print $2}' "], shell=True)
-        ip = ip.rstrip() # removes '\n'
+        ip = ip.rstrip()  # removes '\n'
     return ip
 
 
 def get_hostname():
     return socket.gethostname()
 
+
 def get_user():
-    #Get User
+    # Get User
     user = CONF.getDBUser()
-    if not user: #if not user get the localuser
+    if not user:  # if not user get the localuser
         user = getpass.getuser()
 
     return user
@@ -95,6 +97,5 @@ class CommandRunInformation:
         for k, v in dictt.items():
             setattr(self, k, v)
         return self
-
 
 # I'm Py3

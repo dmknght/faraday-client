@@ -72,7 +72,7 @@ class Workspace:
         self.end_date = edate
 
     def isActive(self):
-        return self.name == self._workspace_manager.getActiveWorkspace().name
+        return self.name == self._workspace_manager.get_active_workspace().name
 
     def getHosts(self):
         return list(self.hosts.values())

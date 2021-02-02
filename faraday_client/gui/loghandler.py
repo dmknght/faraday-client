@@ -11,6 +11,7 @@ import threading
 import faraday_client.model.guiapi
 from faraday_client.gui.customevents import LogCustomEvent
 
+
 class GUIHandler(logging.Handler):
     def __init__(self):
         logging.Handler.__init__(self)
@@ -40,6 +41,5 @@ class GUIHandler(logging.Handler):
             self._widgets_lock.release()
         except:
             self.handleError(record)
-
 
 # I'm Py3

@@ -34,7 +34,7 @@ class GuiApp(FaradayUi):
     def run(self, args):
         workspace = args.workspace
         try:
-            ws = super(GuiApp, self).openWorkspace(workspace)
+            ws = super(GuiApp, self).open_workspace(workspace)
         except Exception as e:
             get_logger(self).error(
                 ("Your last workspace %s is not accessible, "
@@ -47,7 +47,7 @@ class GuiApp(FaradayUi):
             for i in range(4):
                 workspace = click.prompt("Please write the correct, Workspace)")
                 try:
-                    ws = super(GuiApp, self).openWorkspace(workspace)
+                    ws = super(GuiApp, self).open_workspace(workspace)
                     valid = True
                     break
                 except Exception as err:

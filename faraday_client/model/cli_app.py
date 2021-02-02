@@ -12,7 +12,8 @@ from faraday_client.managers.reports_managers import ReportProcessor
 
 logger = logging.getLogger(__name__)
 
-class CliApp():
+
+class CliApp:
     def __init__(self, workspace_manager, plugin_controller):
         self.workspace_manager = workspace_manager
         self.plugin_controller = plugin_controller
@@ -20,16 +21,15 @@ class CliApp():
     def run(self, args):
         workspace = args.workspace
         try:
-            self.workspace_manager.openWorkspace(workspace)
+            self.workspace_manager.open_workspace(workspace)
         except Exception as e:
             logger.error(
-                ("The workspace %s is not accessible, "
-                 "check configuration") % workspace)
+                f"The workspace {workspace} is not accessible, "
+                "check configuration")
             logger.error(str(e))
             return -1
 
         rp = ReportProcessor(self.plugin_controller)
         rp.processReport(args.filename)
-
 
 # I'm Py3

@@ -519,7 +519,7 @@ class NewWorkspaceDialog(Gtk.Window):
         create it and add it to the sidebar. If not, show error.
         """
         ws_name = self.name_entry.get_text()
-        if self.workspace_manager.isWorkspaceNameValid(ws_name):
+        if self.workspace_manager.is_workspace_name_valid(ws_name):
             ws_desc = self.description_entry.get_text()
             creation_ok = self.create_ws_callback(ws_name, ws_desc)
             if creation_ok:
@@ -1826,10 +1826,14 @@ class ForceChooseWorkspaceDialog(Gtk.Window):
 
     def create_button_box(self):
         button_box = Gtk.Box()
-        OK_button = Gtk.Button.new_with_label("OK")
-        OK_button.connect("clicked", self.on_click_ok)
-        button_box.pack_start(OK_button, False, False, 6)
-        button_box.pack_start(Gtk.Box(), True, True, 6)
+        ok_button = Gtk.Button.new_with_label("OK")
+        ok_button.connect("clicked", self.on_click_ok)
+        button_box.pack_start(ok_button, False, False, 6)
+        # button_box.pack_start(Gtk.Box(), True, True, 6)
+
+        cancel_button = Gtk.Button.new_with_label("Cancel")
+        cancel_button.connect("clicked", self.on_click_cancel)
+        button_box.pack_end(cancel_button, False, False, 6)
         return button_box
 
     def create_explanation_message(self):
@@ -1864,6 +1868,9 @@ class ForceChooseWorkspaceDialog(Gtk.Window):
             ws_name = model[iter_][0]
             self.change_ws_callback(ws_name)
             self.destroy()
+
+    def on_click_cancel(self, button=None):
+        self.destroy()
 
 
 class NotificationsDialog(Gtk.Window):

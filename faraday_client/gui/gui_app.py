@@ -33,28 +33,28 @@ class FaradayUi:
         self.plugin_controller = plugin_controller
         self.report_manager = None
 
-    def getModelController(self):
+    def get_model_controller(self):
         return self.model_controller
 
-    def getPluginManager(self):
+    def get_plugin_manager(self):
         return self.plugin_manager
 
-    def getWorkspaceManager(self):
+    def get_workspace_manager(self):
         return self.workspace_manager
 
-    def setSplashImage(self, ipath):
+    def get_splash_image(self, ipath):
         pass
 
-    def startSplashScreen(self):
+    def get_splash_screen(self):
         pass
 
-    def stopSplashScreen(self):
+    def stop_splash_screen(self):
         pass
 
-    def splashMessage(self, message):
+    def splash_message(self, message):
         pass
 
-    def loadWorkspaces(self):
+    def load_workspaces(self):
         pass
 
     def run(self, args):
@@ -66,10 +66,10 @@ class FaradayUi:
     def postEvent(self, receiver, event):
         pass
 
-    def createLoggerWidget(self):
+    def create_logger_widget(self):
         pass
 
-    def openWorkspace(self, name):
+    def open_workspace(self, name):
         """Open a workspace by name. Returns the workspace of raises an
         exception if for some reason it couldn't.
         """
@@ -77,7 +77,7 @@ class FaradayUi:
             self.report_manager.stop()
             self.report_manager.join()
         try:
-            ws = self.getWorkspaceManager().openWorkspace(name)
+            ws = self.get_workspace_manager().open_workspace(name)
             self.report_manager = ReportManager(
                 10,
                 name,

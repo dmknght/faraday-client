@@ -54,7 +54,7 @@ def exception_handler(obj_type, value, tb):
     traceback.print_exception(obj_type, value, tb, file=text)
     error_name = text.getvalue().split('\n')[-2]
 
-    excepts = f"Traceback: {text.getvalue()}".encode('utf-8')
+    excepts = f"{text.getvalue()}".encode('utf-8')
     exception_hash = hashlib.sha256(excepts).hexdigest()
     os_dist = " ".join(distro.linux_distribution())
     python_version = platform.python_version()
@@ -67,15 +67,14 @@ def exception_handler(obj_type, value, tb):
     except (ImportError, AttributeError):
         pass
 
-    python_dist = f"Python {python_version} \n Modules: [ {modules_info} ]"
+    python_dist = f"Python {python_version} - Modules: [ {modules_info} ]"
 
-    description = """
-    Exception: %s
-    Identifier: %s
-    Versions: OS: %s,
-              Faraday Version: %s
-              Python Versions: %s
-    """ % (excepts, exception_hash, os_dist, faraday_version, python_dist)
+    description = f"""
+OS: {os_dist}
+Faraday client: {faraday_version}
+Python version: {python_dist}
+Hash: {exception_hash}
+Exception:\n{excepts.decode('utf-8')}"""
 
     event = ShowExceptionCustomEvent(description, reportToDevelopers, error_name)
     faraday_client.model.guiapi.postCustomEvent(event)
